@@ -7,10 +7,11 @@
   <body>
     <script src="https://rawgithub.com/mrdoob/three.js/master/build/three.js"></script>
     <script>
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
 camera.position.z = 300;
-camera.position.y = 25;
+camera.position.y = 40;
 
 var light = new THREE.SpotLight();
 light.position.set(100, 50, 100);
@@ -26,23 +27,42 @@ renderer.setClearColor(0xEEEEEE, 1.0);
 renderer.clear();
 
 // add objects to scene
-var vasePlane = new THREE.Mesh(
+var vasePlane0 = new THREE.Mesh(
   new THREE.CubeGeometry(100,50,5),
   new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
-scene.add(vasePlane);
+
+var vasePlane1 = new THREE.Mesh(
+  new THREE.CubeGeometry(100,50,5),
+  new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
+
+var vasePlane2 = new THREE.Mesh(
+  new THREE.CubeGeometry(100,50,5),
+  new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
+
+var vasePlane3 = new THREE.Mesh(
+  new THREE.CubeGeometry(100,50,5),
+  new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
+
+var vaseArray = [vasePlane0, vasePlane1, vasePlane2, vasePlane3];
+
+for (var i = 0, len = vaseArray.length; i < len; i++) {
+  scene.add(vaseArray[i]);
+}
 
 // turn shadows on
 renderer.shadowMapEnabled = true;
 light.castShadow = true;
-vasePlane.castShadow = true;
-vasePlane.receiveShadow = true;
+vasePlane0.castShadow = true;
+vasePlane0.receiveShadow = true;
 
 function animate(t) {
 
   // move objects along a circular path
-  vasePlane.position.z = 80*Math.cos(t/1000);
-  vasePlane.position.x = 80*Math.sin(t/1000);
-  
+  for (var i = 0, len = vaseArray.length; i < len; i++) {  
+    vaseArray[i].position.z = 80*Math.cos((t/1000) + (i*Math.PI/2));
+    vaseArray[i].position.x = 80*Math.sin((t/1000) + (i*Math.PI/2));
+  }
+
   // rotate the objects
 //  vasePlane.rotation.x = .000;
 //  vasePlane.rotation.y +=  0.0;
