@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Three.js Test</title>
+    <style> canvas { width: 100%; height: 100% } </style>
+  </head>
+  <body>
+    <script src="https://rawgithub.com/mrdoob/three.js/master/build/three.js"></script>
+    <script>
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+camera.position.z = 300;
+
+var light = new THREE.SpotLight();
+light.position.set(170, 330, -160);
+scene.add(light);
+
+// initialize renderer and add canvas element to DOM
+var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// set scene background color
+renderer.setClearColorHex(0xEEEEEE, 1.0);
+renderer.clear();
+
+// add objects to scene
+var vasePlane = new THREE.Mesh(
+  new THREE.CubeGeometry(100,50,2),
+  new THREE.MeshPhongMaterial({ color: 0xFFFFFF }));
+scene.add(vasePlane);
+
+// turn shadows on
+renderer.shadowMapEnabled = true;
+light.castShadow = true;
+vasePlane.castShadow = true;
+vasePlane.receiveShadow = true;
+
+/*function render() {
+  // spin the plane around its axis
+  requestAnimationFrame(render);
+  renderer.render(scene, camera);
+}
+
+render();*/
+
+function animate(t) {
+  // spin the camera in a circle
+//  camera.position.x = Math.sin(t/1000)*300;
+//  camera.position.y = 150;
+//  camera.position.z = Math.cos(t/1000)*300;
+  // translate objects
+  vasePlane.position.x += 1;
+  // rotate the objects
+//  vasePlane.rotation.x = .000;
+//  vasePlane.rotation.y +=  0.0;
+//  vasePlane.rotation.z = .000;
+  // update lookAt every frame
+  camera.lookAt(scene.position);
+  // renderer automatically clears unless autoClear = flase
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate, renderer.domElement);
+};
+
+animate(new Date().getTime());
+  
+    </script>
+  </body>
+</html>
