@@ -10,6 +10,7 @@
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
 camera.position.z = 300;
+camera.position.y = 25;
 
 var light = new THREE.SpotLight();
 light.position.set(100, 50, 100);
@@ -26,8 +27,8 @@ renderer.clear();
 
 // add objects to scene
 var vasePlane = new THREE.Mesh(
-  new THREE.CubeGeometry(100,50,2),
-  new THREE.MeshPhongMaterial({ color: 0xFFFFFF }));
+  new THREE.CubeGeometry(100,50,5),
+  new THREE.MeshLambertMaterial({ color: 0xFFFFFF }));
 scene.add(vasePlane);
 
 // turn shadows on
@@ -36,70 +37,27 @@ light.castShadow = true;
 vasePlane.castShadow = true;
 vasePlane.receiveShadow = true;
 
-var right = true;
-var back = true;
+function animate(t) {
 
-function render() {
-
-  // translate objects
-  if (right === true && back === true) {
-    vasePlane.position.x += 1;
-    vasePlane.position.z -= 1;
-    if (vasePlane.position.x === 100) {
-      right = false;
-    }
-  } else if (right === false && back === true) {
-    vasePlane.position.x -= 1;
-    vasePlane.position.z -= 1;
-    if (vasePlane.position.x === 0) {
-      back = false;
-    }
-  } else if (back === false && right === false) {
-    vasePlane.position.x -= 1;
-    vasePlane.position.z += 1;
-    if (vasePlane.position.x === -100) {
-      right = true;
-    }
-  } else {
-    vasePlane.position.x += 1;
-    vasePlane.position.z += 1;
-    if (vasePlane.position.x === 0) {
-      back = true;
-    }
-  }
-
-  // draw
-  renderer.render(scene, camera);
-
-  // set up the next call
-  requestAnimationFrame(render);
-
-}
-
-render();
-
-/*function animate(t) {
-  // spin the camera in a circle
-//  camera.position.x = Math.sin(t/1000)*300;
-//  camera.position.y = 150;
-//  camera.position.z = Math.cos(t/1000)*300;
-  // translate objects
-  vasePlane.position.x += 1;
-  vasePlane.position.z -= 1;
+  // move objects along a circular path
+  vasePlane.position.z = 80*Math.cos(t/1000);
+  vasePlane.position.x = 80*Math.sin(t/1000);
   
   // rotate the objects
 //  vasePlane.rotation.x = .000;
 //  vasePlane.rotation.y +=  0.0;
 //  vasePlane.rotation.z = .000;
+
   // update lookAt every frame
   camera.lookAt(scene.position);
-  // renderer automatically clears unless autoClear = flase
+
+  // renderer automatically clears unless autoClear = false
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate, renderer.domElement);
+
 };
 
-animate(new Date().getTime());*/
-
+animate(new Date().getTime());
   
     </script>
   </body>
