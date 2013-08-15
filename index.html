@@ -52,12 +52,14 @@ for (var i = 0, len = vaseArray.length; i < len; i++) {
 // turn shadows on
 renderer.shadowMapEnabled = true;
 light.castShadow = true;
-vasePlane0.castShadow = true;
-vasePlane0.receiveShadow = true;
+for (var i = 0, len = vaseArray.length; i < len; i++) {  
+  vaseArray[i].castShadow = true;
+  vaseArray[i].receiveShadow = true;
+}
 
 function animate(t) {
 
-  // move objects along a circular path
+  // position objects along a circular path
   for (var i = 0, len = vaseArray.length; i < len; i++) {  
     vaseArray[i].position.z = 80*Math.cos((t/1000) + (i*Math.PI/2));
     vaseArray[i].position.x = 80*Math.sin((t/1000) + (i*Math.PI/2));
